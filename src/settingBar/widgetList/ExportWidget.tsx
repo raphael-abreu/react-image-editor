@@ -9,7 +9,6 @@ import sizeStyles from "../../style/size.module.css";
 import { WidgetKind } from "../Widget";
 import { SettingBarProps } from "..";
 import useSelection from "../../hook/useSelection";
-import useStage from "../../hook/useStage";
 import useI18n from "../../hook/usei18n";
 
 export type ExportKind = {
@@ -19,7 +18,6 @@ export type ExportKind = {
   name: string;
   selectedItems: Node<NodeConfig>[];
   clearSelection: ReturnType<typeof useSelection>["clearSelection"];
-  stageRef: ReturnType<typeof useStage>["stageRef"];
 };
 
 type ExportWidgetProps = {
@@ -39,7 +37,6 @@ const ExportWidget: React.FC<ExportWidgetProps> = ({ data }) => (
             "data-item-type": "export",
             selectedItems: data.selectedItems,
             clearSelection: data.clearSelection,
-            stageRef: data.stageRef,
           }}
         />
       ))}
@@ -53,39 +50,12 @@ const ExportThumbnail: React.FC<{
   data: ExportKind;
 }> = ({ data }) => {
   const { getTranslation } = useI18n();
-  const downloadSelected = (targetFrame?: Node<NodeConfig> | Group) => {
-    const link = document.createElement("a");
-    const frame
-      = targetFrame ?? data.selectedItems.find((item) => item.attrs["data-item-type"] === "frame");
-    if (frame) {
-      const stage = frame.getStage()!;
-      data.clearSelection();
-      const uri = stage.toDataURL({
-        x: frame.getClientRect().x,
-        y: frame.getClientRect().y,
-        width: frame.attrs.width * stage.scaleX(),
-        height: frame.attrs.height * stage.scaleY(),
-        pixelRatio: 1 / stage.scaleX(),
-      });
-      if (uri) {
-        link.download = "export.png";
-        link.href = uri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
+  const downloadSelected = () => {
+    return;
   };
 
   const downloadAll = () => {
-    const frames = data.stageRef.current
-      .getChildren()[0]
-      .getChildren((item) => item.attrs.name === "label-group");
-    frames
-      .map((frame) => (frame as Group).getChildren((item) => item.attrs.name === "label-target")[0])
-      .forEach((frame) => {
-        downloadSelected(frame as Node<NodeConfig>);
-      });
+    return; 
   };
 
   const onClickDownload = (exportId: string) => () => {

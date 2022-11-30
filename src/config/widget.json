@@ -1,27 +1,7 @@
 [
   {
-    "id": "image",
-    "name": "Image"
-  },
-  {
     "id": "colorPalette",
     "name": "Color Palette"
-  },
-  {
-    "id": "align",
-    "name": "Align"
-  },
-  {
-    "id": "frame",
-    "name": "Frame"
-  },
-  {
-    "id": "shape",
-    "name": "Shape"
-  },
-  {
-    "id": "text",
-    "name": "Text"
   },
   {
     "id": "icon",

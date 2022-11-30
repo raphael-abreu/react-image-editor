@@ -2,7 +2,6 @@ import React from "react";
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import colorStyles from "../style/color.module.css";
 import borderStyles from "../style/border.module.css";
-import useStage from "../hook/useStage";
 import useI18n from "../hook/usei18n";
 
 export type NavBarItemKind = {
@@ -14,7 +13,6 @@ export type NavBarItemKind = {
 };
 
 type NavBarButtonProps = {
-  stage: ReturnType<typeof useStage>;
   onClick: () => void;
   data: NavBarItemKind;
 };

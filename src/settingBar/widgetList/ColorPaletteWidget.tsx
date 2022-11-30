@@ -16,7 +16,6 @@ import alignStyles from "../../style/align.module.css";
 import fontStyles from "../../style/font.module.css";
 import { WidgetKind } from "../Widget";
 import { SettingBarProps } from "..";
-import useItem from "../../hook/useItem";
 import useLocalStorage from "../../hook/useLocalStorage";
 import useI18n from "../../hook/usei18n";
 
@@ -35,7 +34,7 @@ export const COLOR_LIST_KEY = "colorList";
 
 const ColorPaletteWidget: React.FC<ColorPaletteWidgetProps> = ({ data }) => {
   const { getValue, setValue } = useLocalStorage();
-  const { updateItem } = useItem();
+
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [newColor, setNewColor] = useState<string>("#000000");
   const { getTranslation } = useI18n();
@@ -81,7 +80,7 @@ const ColorPaletteWidget: React.FC<ColorPaletteWidgetProps> = ({ data }) => {
     } else {
       data.selectedItems[0].attrs.fill = "transparent";
     }
-    updateItem(data.selectedItems[0].id(), (attrs) => data.selectedItems[0].attrs);
+    
   };
   return (
     <Col>
@@ -179,7 +178,6 @@ export default ColorPaletteWidget;
 const ColorPaletteThumbnail: React.FC<{
   data: ColorPaletteKind;
 }> = ({ data: { id, ...data } }) => {
-  const { updateItem } = useItem();
 
   const onClickColorBlock = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -191,7 +189,7 @@ const ColorPaletteThumbnail: React.FC<{
       } else {
         item.attrs.fill = data.colorCode;
       }
-      updateItem(item.id(), () => item.attrs);
+      
     });
     data.selectedItems[0].getStage()?.batchDraw();
   };
@@ -212,7 +210,7 @@ const ColorPaletteThumbnail: React.FC<{
 const ColorPaletteOpacitySlider: React.FC<{
   data: Omit<Omit<ColorPaletteKind, "colorCode">, "id">;
 }> = ({ data }) => {
-  const { updateItem } = useItem();
+
   const { getTranslation } = useI18n();
 
   const [opacity, setOpacity] = useState(
@@ -237,7 +235,7 @@ const ColorPaletteOpacitySlider: React.FC<{
     data.selectedItems.forEach((item) => {
       item.opacity(parseInt(e.currentTarget.value) * 0.01);
       item.attrs.opacity = parseInt(e.currentTarget.value) * 0.01;
-      updateItem(item.id(), () => item.attrs);
+      
     });
     data.selectedItems[0].getStage()?.batchDraw();
   };
@@ -257,7 +255,7 @@ const ColorPaletteOpacitySlider: React.FC<{
 const ColorPaletteBrightnessSlider: React.FC<{
   data: Omit<Omit<ColorPaletteKind, "colorCode">, "id">;
 }> = ({ data }) => {
-  const { updateItem } = useItem();
+
   const { getTranslation } = useI18n();
 
   const [brightness, setBrightNess] = useState(
@@ -284,7 +282,7 @@ const ColorPaletteBrightnessSlider: React.FC<{
     data.selectedItems.forEach((item) => {
       item.brightness(parseInt(e.currentTarget.value) * 0.01);
       item.attrs.brightness = parseInt(e.currentTarget.value) * 0.01;
-      updateItem(item.id(), () => item.attrs);
+      
     });
     data.selectedItems[0].getStage()?.batchDraw();
   };
@@ -304,7 +302,7 @@ const ColorPaletteBrightnessSlider: React.FC<{
 const ColorPaletteGrayScaleToggle: React.FC<{
   data: Omit<Omit<ColorPaletteKind, "colorCode">, "id">;
 }> = ({ data }) => {
-  const { updateItem } = useItem();
+
   const { getTranslation } = useI18n();
   const [grayScale, setGrayScale] = useState<boolean>(
     !!(
@@ -333,10 +331,7 @@ const ColorPaletteGrayScaleToggle: React.FC<{
       data.selectedItems[0].filters([...data.selectedItems[0].filters(), Konva.Filters.Grayscale]);
       newFilters = [...data.selectedItems[0].filters(), Konva.Filters.Grayscale];
     }
-    updateItem(data.selectedItems[0].id(), () => ({
-      ...data.selectedItems[0].attrs,
-      _filters: newFilters.map((_filter: Filter) => _filter.name),
-    }));
+
     data.selectedItems[0].getStage()?.batchDraw();
   };
 
